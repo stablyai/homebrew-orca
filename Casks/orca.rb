@@ -1,9 +1,9 @@
 cask "orca" do
   arch arm: "arm64", intel: "x64"
 
-  version "1.4.35"
-  sha256 arm:   "2fc97374dcb3382a1d76c314a92c14fc3dff9d55b769d7ee363b63222bc57ecd",
-         intel: "580f9b3595afbd5ae6e9adad5247ecb6a6f101aae00da40be420911c2b4927ee"
+  version "1.4.38"
+  sha256 arm:   "6924a8860b1991c92ca0c579236817c1c6e94101da46bf2222b78e2b251f816c",
+         intel: "33b1e23552565336a1f7c4f2b70c9e8d526a1e0c5e2e7c0f2bc6944fc62b6d1a"
 
   url "https://github.com/stablyai/orca/releases/download/v#{version}/orca-macos-#{arch}.dmg",
       verified: "github.com/stablyai/orca/"
@@ -22,7 +22,8 @@ cask "orca" do
   # becomes a no-op unless the user passes --greedy, and brew's version
   # metadata stays aligned with whatever the app has swapped itself to.
   auto_updates true
-  depends_on macos: ">= :big_sur"
+  conflicts_with cask: "orca@rc"
+  depends_on macos: :big_sur
 
   app "Orca.app"
 
