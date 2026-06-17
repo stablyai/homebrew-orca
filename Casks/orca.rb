@@ -1,9 +1,9 @@
 cask "orca" do
   arch arm: "arm64", intel: "x64"
 
-  version "1.4.76"
-  sha256 arm:   "4851244f5e185a827f8cb5ec4cf32826c5f6c709db390f95dc96d0317fa246e3",
-         intel: "2f26ce45ce93e054f49f92ca61891d628298fc0c7037d48b701ff879c4f06cf1"
+  version "1.4.77"
+  sha256 arm:   "2730b546e2bc93c574bf8e4ed00e044ed5348c7ecc9f795f99263e75109753a7",
+         intel: "7daea4593843d8f89b2810424302166ef2e45929a024044e34aa1b7635c96c87"
 
   url "https://github.com/stablyai/orca/releases/download/v#{version}/orca-macos-#{arch}.dmg",
       verified: "github.com/stablyai/orca/"
