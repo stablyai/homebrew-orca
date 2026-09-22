@@ -5,8 +5,7 @@ cask "orca" do
   sha256 arm:   "9878587716ecbd6a192bf275288cc43eee0f8e5ba0e16184c2e0bb46764c7e29",
          intel: "e0c0dc04ec2cc83aa96333f416b7e453697ce0bd6498f7911e84226b41ce9119"
 
-  url "https://github.com/stablyai/orca/releases/download/v#{version}/orca-macos-#{arch}.dmg",
-      verified: "github.com/stablyai/orca/"
+  url "https://github.com/stablyai/orca/releases/download/v#{version}/orca-macos-#{arch}.dmg"
   name "Orca"
   desc "IDE for orchestrating AI coding agents across terminals and worktrees"
   homepage "https://onorca.dev/"
