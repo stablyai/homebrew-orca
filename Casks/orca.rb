@@ -22,7 +22,7 @@ cask "orca" do
   # metadata stays aligned with whatever the app has swapped itself to.
   auto_updates true
   conflicts_with cask: "orca@rc"
-  depends_on macos: :big_sur
+  depends_on macos: :monterey
 
   app "Orca.app"
 
