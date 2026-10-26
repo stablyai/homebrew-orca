@@ -1,9 +1,9 @@
 cask "orca" do
   arch arm: "arm64", intel: "x64"
 
-  version "1.4.240"
-  sha256 arm:   "6020a633e2f3775d77395f5a9703f9a11d31fbf0fe0afeab8dbed39e140fbe90",
-         intel: "24ae4ded325e058edde6819bfe80f80f96fd478316c8eec8ee6307df77d3221f"
+  version "1.4.241"
+  sha256 arm:   "be5000497b370e9727c2343de50720312b9882d59ec0ba2012c02fbddc8e305e",
+         intel: "cde5cb6793b53b19faeb58bb968160571428d023d62bf4c5639b6ab79bc9c90b"
 
   url "https://github.com/stablyai/orca/releases/download/v#{version}/orca-macos-#{arch}.dmg"
   name "Orca"
@@ -15,27 +15,17 @@ cask "orca" do
     strategy :github_latest
   end
 
-  # Why: electron-updater (src/main/updater.ts) handles in-place updates by
-  # writing a new Orca.app into /Applications. Marking the cask auto_updates
-  # tells Homebrew not to compete with the in-app updater — `brew upgrade`
-  # becomes a no-op unless the user passes --greedy, and brew's version
-  # metadata stays aligned with whatever the app has swapped itself to.
+  # Let the in-app updater own updates; Homebrew skips auto_updates unless --greedy.
   auto_updates true
   conflicts_with cask: "orca@rc"
   depends_on macos: :big_sur
 
   app "Orca.app"
 
-  # Why: expose the bundled `orca` CLI on PATH at install time (Homebrew symlinks
-  # this into its already-on-PATH bin dir). Without it, the CLI is only registered
-  # by the in-app "Install CLI" action, which a headless host can never trigger —
-  # so `orca serve` on a server would be unreachable from the shell. The shim
-  # resolves the real app by walking symlinks, so the Homebrew symlink works.
+  # Expose the symlink-resolving bundled CLI on PATH so headless hosts can use orca serve without the in-app installer.
   binary "#{appdir}/Orca.app/Contents/Resources/bin/orca"
 
-  # Why: Orca writes user data under ~/.orca (worktrees, agent state) and
-  # Electron's standard userData directories. Zap removes everything the app
-  # creates during normal use so `brew uninstall --zap` is a clean slate.
+  # Zap app-created ~/.orca and Electron userData for a clean uninstall.
   zap trash: [
     "~/.orca",
     "~/Library/Application Support/Orca",
