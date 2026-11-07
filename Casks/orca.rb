@@ -1,9 +1,9 @@
 cask "orca" do
   arch arm: "arm64", intel: "x64"
 
-  version "1.4.251"
-  sha256 arm:   "2588fb3eea34eb0d328b9a5cd3be5ab5b36aafb02622d01308e2cb3535d8e0fe",
-         intel: "6d9b6a0ce76a11887cec53183cdf66300f51d41a58a52d5cca279a2d7fc50d65"
+  version "1.4.252"
+  sha256 arm:   "3ebd434c09642ab80b54d5ef086769928b7ae93ef2c3a432c7c079a7fb878290",
+         intel: "66cfd619dde38918094f89be31693dd20603822b6c3ecaf7022779351e5d7b5a"
 
   url "https://github.com/stablyai/orca/releases/download/v#{version}/orca-macos-#{arch}.dmg"
   name "Orca"
@@ -15,15 +15,24 @@ cask "orca" do
     strategy :github_latest
   end
 
-  # Let the in-app updater own updates; Homebrew skips auto_updates unless --greedy.
+  # Let the in-app updater own updates between brew upgrades.
   auto_updates true
   conflicts_with cask: "orca@rc"
-  depends_on macos: :big_sur
+  depends_on macos: :ventura
 
   app "Orca.app"
 
   # Expose the symlink-resolving bundled CLI on PATH so headless hosts can use orca serve without the in-app installer.
   binary "#{appdir}/Orca.app/Contents/Resources/bin/orca"
+
+  # depends_on can't say 13.4, and Homebrew upgrades auto_updates casks past the in-app updater's macOS gate.
+  preflight_steps do
+    run "/bin/sh", args: [
+      "-c",
+      'case "$(/usr/bin/sw_vers -productVersion)" in 13|13.[0-3]|13.[0-3].*) ' \
+      'echo "Orca needs macOS 13.4 or later. Update macOS to upgrade Orca." >&2; exit 1;; esac',
+    ]
+  end
 
   # Zap app-created ~/.orca and Electron userData for a clean uninstall.
   zap trash: [
